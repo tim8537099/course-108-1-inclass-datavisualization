@@ -1,6 +1,8 @@
 ---
 title: "Untitled"
 output: html_document
+editor_options: 
+  chunk_output_type: inline
 ---
 ```{r basic setup, message=FALSE, echo=TRUE, eval=T}
 library(dplyr); library(stringr); library(ggplot2); library(plotly); library(lubridate); library(readr); library(tidyr); library(showtext)
@@ -39,4 +41,29 @@ StuDF <- data.frame(
 StuDF 
 
 ```
+
+```{r}
+library(readr)
+collegeData <- read_csv("https://raw.githubusercontent.com/tpemartin/github-data/master/103_student.csv")
+
+str(collegeData)
+slice(collegeData,c(1:4,(n()-2):n(),101:110))
+```
+
+
+```{r}
+mutate(collegeData,
+       男生=一年級男生+二年級男生+三年級男生+四年級男生) -> collegeData
+collegeData$女生 <- collegeData$一年級女生+collegeData$二年級女生+collegeData$三年級女生+collegeData$四年級女生
+
+mutate(collegeData,男女生比=男生/女生) -> collegeData
+
+
+```
+
+```{r}
+
+```
+
+
 
