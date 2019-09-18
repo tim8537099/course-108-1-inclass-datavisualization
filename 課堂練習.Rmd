@@ -62,8 +62,27 @@ mutate(collegeData,男女生比=男生/女生) -> collegeData
 ```
 
 ```{r}
-
+#1
+collegeData
+filter(collegeData,縣市名稱=="30 臺北市") %>% View
+#2
+filter(collegeData,縣市名稱=="30 臺北市" | 縣市名稱=="01 新北市")
 ```
 
+```{r}
+group_by(StuDF,
+         性別) -> StuDF_by性別
+summarise(StuDF_by性別,
+        平均成績=mean(成績),
+        最高分=max(成績),
+        最低分=min(成績))
+summarise(StuDF,
+        平均成績=mean(成績),
+        最高分=max(成績),
+        最低分=min(成績))
+```
 
+```{r}
+
+```
 
