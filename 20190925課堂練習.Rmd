@@ -14,75 +14,168 @@ knitr::opts_chunk$set(out.width='80%', fig.asp=.75, fig.align='center', fig.show
 ```
 
 
-
-
 ```{r}
-StuList <- list(
-  次序=c(1,2,3,4,5,6,7,8),
-  學號=c(172,214,322,425,517,833,752,114),
-  姓名=c("小明","大雄","胖虎","小新","大白","阿華","小英","阿美"),
-  性別=c("男","男","男","女","女","男","女","男"),
-  成績=c(80,42,90,82,50,77,30,90)
-  )
-StuList 
-as.data.frame(StuList) -> StuDFfromList
-StuDFfromList
-
-```
-
-```{r}
-StuDF <- data.frame(
-  次序=c(1,2,3,4,5,6,7,8),
-  學號=c(172,214,322,425,517,833,752,114),
-  姓名=c("小明","大雄","胖虎","小新","大白","阿華","小英","阿美"),
-  性別=c("男","男","男","女","女","男","女","男"),
-  成績=c(80,42,90,82,50,77,30,90)
-  )
-StuDF 
-
+df_gatherExample <- data.frame(
+  country=c("A","B","C"),
+  `1999`=c("0.7k","37k","212k"),
+  `2000`=c("2k","80k","213k"),
+  check.names = F
+)
+df_gatherExample
 ```
 
 ```{r}
 library(readr)
 collegeData <- read_csv("https://raw.githubusercontent.com/tpemartin/github-data/master/103_student.csv")
+```
 
-str(collegeData)
-slice(collegeData,c(1:4,(n()-2):n(),101:110))
+
+
+```{r}
+library(readr)
+df_taoyuanMarriage <- read_csv("https://data.tycg.gov.tw/opendata/datalist/datasetMeta/download?id=f95d1a33-ec56-44c5-a9ec-3afba8157e39&rid=fd2070ef-7431-4f9c-bc3a-82d7bfbcd2fb")
+```
+
+```{r echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
+df_taoyuanMarriage%>%
+  gather(
+    ends_with("月"),
+    key = "月份",value = "對數"
+  ) ->df_taoyuanMarriage_gather
+df_taoyuanMarriage_gather 
+
+```
+
+```{r}
+df_taoyuanMarriage_gather %>%
+  gather(ends_with("月"), key = "月數", value = "對數") %>%
+  group_by(月份區域別) %>%
+  dplyr::summarise(最高峰月份 = which.max
 ```
 
 
 ```{r}
-mutate(collegeData,
-       男生=一年級男生+二年級男生+三年級男生+四年級男生) -> collegeData
-collegeData$女生 <- collegeData$一年級女生+collegeData$二年級女生+collegeData$三年級女生+collegeData$四年級女生
+df_twbankExchangeRate <- read_csv("http://www.bot.com.tw/Govinfo/opendata/csv/151/20180101-20181231-FXCRT.csv")
+```
 
-mutate(collegeData,男女生比=男生/女生) -> collegeData
+```{r}
+df_twbankExchangeRate %>%
+  select(-即期賣出匯率) %>%
+  spread(
+    幣別,即期買入匯率
+  ) -> df_twbankExchangeRate_spread
+```
 
+```{r}
+df_twbankExchangeRate %>%
+  mutate(
+    幣別=as.factor(幣別),
+    即期買入匯率=as.double(即期買入匯率),
+    即期賣出匯率=as.double(即期賣出匯率),
+    日期=lubridate::ymd(日期)
+  ) -> aa_twbankExchangeRate
+```
+
+
+
+```{r}
+library(readr); library(dplyr)
+# 線上引入原始資料成字串向量
+read_lines("http://www.taifex.com.tw/data_gov/taifex_open_data.asp?data_name=DailyForeignExchangeRates") ->
+  originalLines
+
+# 將字串由CP950編碼改成UTF8再讀成data frame data2
+originalLines %>%
+  iconv(from="CP950",to="UTF8") %>% 
+  read_csv() -> data2
+```
+
+```{r}
+library(readr)
+X27b5594a385573df182ebb70880cdcbe <- read_csv("http://opendataap2.hl.gov.tw/./resource/files/2019-03-15/27b5594a385573df182ebb70880cdcbe.csv")
+View(X27b5594a385573df182ebb70880cdcbe)
 
 ```
 
 ```{r}
-#1
-collegeData
-filter(collegeData,縣市名稱=="30 臺北市") %>% View
-#2
-filter(collegeData,縣市名稱=="30 臺北市" | 縣市名稱=="01 新北市")
+library(readr)
+subsetDataTWbank <- read_csv("https://www.dropbox.com/s/t8ulj3d7cgl8jh5/subsetDataTWbank.csv?dl=1")
+```
+```{r}
+library(ggplot2)
+ggplot(subsetDataTWbank)+
+  geom_line(
+    aes(x=西元年月,y=`定存利率-一個月-固定`)
+  )
 ```
 
 ```{r}
-group_by(StuDF,
-         性別) -> StuDF_by性別
-summarise(StuDF_by性別,
-        平均成績=mean(成績),
-        最高分=max(成績),
-        最低分=min(成績))
-summarise(StuDF,
-        平均成績=mean(成績),
-        最高分=max(成績),
-        最低分=min(成績))
+subsetDataTWbank %>%
+  ggplot()+
+  geom_point(
+    aes(x=西元年月,y=`定存利率-一個月-固定`)
+    )+
+  geom_line(
+    aes(x=西元年月,y=`定存利率-一個月-固定`)
+  )
+```
+
+
+
+```{r}
+subsetDataTWbank %>%
+  gather(
+    contains("定存"),
+    key = "期數", value = "利率"
+  )->subsetDataTWbank_gather
+subsetDataTWbank_gather%>%
+  ggplot() +
+  geom_boxplot(
+    aes(x=期數,y=利率,color=西元年月)
+  )
 ```
 
 ```{r}
+subsetDataTWbank_gather %>%
+  ggplot()+
+  geom_line(
+    aes(x=西元年月,y=利率,color=期數)
+  )
+```
 
+
+```{r}
+subsetDataTWbank %>%
+  ggplot()+
+  geom_line(
+    aes(x=西元年月,y=`定存利率-一個月-固定`),
+    color="red",
+    alpha=0.2,
+    size=2
+  )
+```
+
+
+
+```{r}
+subsetDataTWbank_gather$期數 %>% 
+  as.factor %>% levels
+```
+
+```{r}
+subsetDataTWbank %>%
+  mutate(
+    年月=年月 %>%
+      stringr::str_extract_all("[:digit:]+") %>%
+      purrr::map_chr(
+                 function(x) {
+                   x1=as.integer(x[[1]])+1911
+                   x[[1]]=as.character(x1)
+                                stringr::str_c(x,collapse="-")
+                 }
+                 ),
+    年月日=stringr::str_c(年月,"01",sep="-"),
+    西元年月日=lubridate::ymd(年月日)
+  ) ->subsetDataTWbank_time
 ```
 
