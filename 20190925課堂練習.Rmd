@@ -1,0 +1,88 @@
+---
+title: "Untitled"
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+```{r basic setup, message=FALSE, echo=TRUE, eval=T}
+library(dplyr); library(stringr); library(ggplot2); library(plotly); library(lubridate); library(readr); library(tidyr); library(showtext)
+
+font_add("QYuan","cwTeXQYuan-Medium.ttf") # 新增字體
+showtext_auto(enable=TRUE) #啟用字體
+theme_set(theme_classic())
+knitr::opts_chunk$set(out.width='80%', fig.asp=.75, fig.align='center', fig.showtext=T)
+```
+
+
+
+
+```{r}
+StuList <- list(
+  次序=c(1,2,3,4,5,6,7,8),
+  學號=c(172,214,322,425,517,833,752,114),
+  姓名=c("小明","大雄","胖虎","小新","大白","阿華","小英","阿美"),
+  性別=c("男","男","男","女","女","男","女","男"),
+  成績=c(80,42,90,82,50,77,30,90)
+  )
+StuList 
+as.data.frame(StuList) -> StuDFfromList
+StuDFfromList
+
+```
+
+```{r}
+StuDF <- data.frame(
+  次序=c(1,2,3,4,5,6,7,8),
+  學號=c(172,214,322,425,517,833,752,114),
+  姓名=c("小明","大雄","胖虎","小新","大白","阿華","小英","阿美"),
+  性別=c("男","男","男","女","女","男","女","男"),
+  成績=c(80,42,90,82,50,77,30,90)
+  )
+StuDF 
+
+```
+
+```{r}
+library(readr)
+collegeData <- read_csv("https://raw.githubusercontent.com/tpemartin/github-data/master/103_student.csv")
+
+str(collegeData)
+slice(collegeData,c(1:4,(n()-2):n(),101:110))
+```
+
+
+```{r}
+mutate(collegeData,
+       男生=一年級男生+二年級男生+三年級男生+四年級男生) -> collegeData
+collegeData$女生 <- collegeData$一年級女生+collegeData$二年級女生+collegeData$三年級女生+collegeData$四年級女生
+
+mutate(collegeData,男女生比=男生/女生) -> collegeData
+
+
+```
+
+```{r}
+#1
+collegeData
+filter(collegeData,縣市名稱=="30 臺北市") %>% View
+#2
+filter(collegeData,縣市名稱=="30 臺北市" | 縣市名稱=="01 新北市")
+```
+
+```{r}
+group_by(StuDF,
+         性別) -> StuDF_by性別
+summarise(StuDF_by性別,
+        平均成績=mean(成績),
+        最高分=max(成績),
+        最低分=min(成績))
+summarise(StuDF,
+        平均成績=mean(成績),
+        最高分=max(成績),
+        最低分=min(成績))
+```
+
+```{r}
+
+```
+
