@@ -24,6 +24,14 @@ df_gatherExample <- data.frame(
 df_gatherExample
 ```
 
+
+```{r}
+gather(df_gatherExample,
+       `1999`,`2000`,
+       key="年份",value="人口") ->ddddd
+```
+
+
 ```{r}
 library(readr)
 collegeData <- read_csv("https://raw.githubusercontent.com/tpemartin/github-data/master/103_student.csv")
