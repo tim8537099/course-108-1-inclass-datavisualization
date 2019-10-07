@@ -2,8 +2,8 @@
 title: "每週一圖作業"
 output: html_document
 params:
-  組員: ["小明","小花"]  
-  學號: ["410773818","410773293"]
+  組員: ["林應廷"]  
+  學號: ["710761129"]
 ---
 
 #### 環境設定
@@ -36,17 +36,32 @@ knitr::opts_chunk$set(out.width='80%', fig.asp=.75, fig.align='center', fig.show
   * 作圖用資料物件生成
   
 ```{r data cleaning, echo=TRUE, eval=T}
+library(readr)
+hualien <- read_csv("http://opendataap2.hl.gov.tw/./resource/files/2019-03-15/27b5594a385573df182ebb70880cdcbe.csv")
+View(hualien)
 
 ```
+```{r}
+hualien %>%
+  gather("鯉魚潭","七星潭","太魯閣","海洋公園","慶修院","松園別館","林田山","東大門夜市",
+         key = 景點, value = 人數) -> hualien2
+```
+
 
 #### 繪圖程式
 
 ```{r graph, echo=T, eval=T}
-
+hualien2 %>%
+  ggplot()+
+  geom_area(
+    aes(x=景點,y=人數,color=景點)
+  )
 ```
+
+
 
 #### 設計說明
 說明想傳達的訊息（必要）及設計想法（非必要）。寫在***之後
 *** 
-
+身為一個花蓮人想要了解花蓮某些特定知名景點的遊客人數分配，意外的發現慶修院的人數竟然還不少，從圖形上來看也勝過了松園別館及林田山，因為慶修院在自己家附近沒想到這麼多人，滿意外的。
 
