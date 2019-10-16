@@ -112,6 +112,39 @@ graphList$圖書_ggplotOnly+
 
 
 ```{r}
+graphList$圖書_ggplotOnly +
+  geom_bar(
+    aes(x=學院,fill=as.factor(讀者年級)), width=0.7
+  )
+```
 
+
+```{r}
+set.seed(2019)
+x <- rnorm(100)
+head(x)
+```
+
+```{r}
+ggplot2::cut_interval(x,n=8) -> x_interval
+levels(x_interval)
+```
+
+```{r}
+df_x <- data.frame(
+  x=x,
+  x_interval=x_interval
+)
+
+df_x %>%
+  group_by(x_interval) %>%
+  summarise(
+    interval_count=n()
+  ) %>%
+  ungroup() %>% #View
+  ggplot(aes(x=x_interval))+
+  geom_col(
+    aes(y=interval_count)
+  )
 ```
 
