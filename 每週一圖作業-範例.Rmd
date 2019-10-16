@@ -37,35 +37,17 @@ knitr::opts_chunk$set(out.width='80%', fig.asp=.75, fig.align='center', fig.show
   * 作圖用資料物件生成
   
 ```{r data cleaning, echo=TRUE, eval=T}
-# 資料引入
-load("example_data.Rda")
-
-# 資料處理
-employmentLaborForceData1 <- dataList$勞動力$data
-employmentLaborForceData1 %>%
-  tidyr::gather(`年平均勞動力`,`年平均就業人口`, key="類別",value="人數（千）") %>%
-  mutate(
-    年=as.integer(as.character(年))
-  ) -> graphData_employment
-
-# 作圖用資料物件生成：處理好可進行作圖的資料請存在一個名為graphData的list物件裡
-graphData <- list()
-graphData$graphData_employment <- graphData_employment
+library(readr)
+graphData <- read_csv("https://opendata.epa.gov.tw/ws/Data/ATM00625/?$format=csv")
 ```
 
 #### 繪圖程式
 
 ```{r graph, echo=T, eval=T}
-graphData$graphData_employment %>%
-  filter(年>=1995) %>%
+graphData %>%
   ggplot()+
   geom_line(
-    aes(
-        x=年,
-        y=`人數（千）`,
-        group=類別,
-        color=類別),
-    size=1
+    aes(x=county,y=PM25,color=county)
   )
 ```
 
@@ -73,4 +55,4 @@ graphData$graphData_employment %>%
 說明想傳達的訊息（必要）及設計想法（非必要）。寫在***之後
 *** 
 
-圖為台灣1995年之後的勞動力與就業人口趨勢，95年勞動力人口為9百21萬人，就業人口為9百零4萬5千人，就業比例（即就業率）為百分之98.21； ，到2018年勞動力人口為1千1百87萬4千人，就業人口為1千1百43萬4千人，就業率為百分之96.29。
+此圖為台灣各縣市PM2.5汙染程度，有圖可知雲林縣為汙染程度最高的城市，這可能也與當地的產業發展及地理環境有關。
