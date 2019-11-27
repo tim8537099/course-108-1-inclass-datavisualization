@@ -1,0 +1,50 @@
+---
+title: "每週一圖作業資料檔"
+output: html_document
+params:
+  組員: ["林應廷","王童緯"]  
+  學號: ["710761129","710761115"]
+---
+
+#### 環境設定
+
+以下為老師執行時一定會存在的環境設定
+```{r basic setup, message=FALSE, echo=TRUE, eval=T}
+rm(list=ls())
+library(dplyr); library(stringr); library(ggplot2); library(plotly); library(lubridate); library(readr); library(colorspace); library(grDevices); library(shiny); library(shinyjs); library(scales)
+library(tidyr); library(showtext); library(tidyverse); library(colorspace)
+
+#font_add("QYuan","cwTeXQYuan-Medium.ttf") # 新增字體
+showtext_auto(enable=TRUE) #啟用字體
+theme_set(theme_classic())
+knitr::opts_chunk$set(fig.align='center', fig.showtext=T)
+```
+
+#### 資料處理
+  
+```{r data cleaning, echo=TRUE, eval=T}
+library(readr)
+hualien <- read_csv("http://opendataap2.hl.gov.tw/./resource/files/2019-03-15/27b5594a385573df182ebb70880cdcbe.csv")
+graphData <- list()
+hualien %>%
+  gather("鯉魚潭","七星潭","太魯閣","海洋公園","慶修院","松園別館","東大門夜市",
+         key = 景點, value = 人數) -> graphData
+graphData %>% select(月份,景點,人數) -> graphData
+graphData$人數 %>% as.numeric() -> graphData$人數
+graphData %>% na.omit() -> graphData
+
+#合計資料影響到圖示顯示所以刪掉
+graphData <- graphData[-11,]
+graphData <- graphData[-21,]
+graphData <- graphData[-31,]
+graphData <- graphData[-41,]
+graphData <- graphData[-51,]
+graphData <- graphData[-61,]
+graphData <- graphData[-71,]
+
+graphData %>%
+  mutate(月份=factor(月份,levels=c("1","2","3","4","5","6","7","8","9","10"))) -> graphData
+
+
+```
+
