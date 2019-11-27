@@ -5,7 +5,7 @@ editor_options:
   chunk_output_type: inline
 ---
 ```{r basic setup, message=FALSE, echo=TRUE, eval=T}
-library(dplyr); library(stringr); library(ggplot2); library(plotly); library(lubridate); library(readr); library(tidyr); library(showtext)
+library(dplyr); library(stringr); library(ggplot2); library(plotly); library(lubridate); library(readr); library(tidyr); library(showtext);library(sf)
 
 font_add("QYuan","cwTeXQYuan-Medium.ttf") # 新增字體
 showtext_auto(enable=TRUE) #啟用字體
