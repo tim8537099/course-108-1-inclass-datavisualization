@@ -7,10 +7,106 @@ editor_options:
 ```{r basic setup, message=FALSE, echo=TRUE, eval=T}
 library(dplyr); library(stringr); library(ggplot2); library(plotly); library(lubridate); library(readr); library(tidyr); library(showtext);library(sf)
 
-font_add("QYuan","cwTeXQYuan-Medium.ttf") # 新增字體
+#font_add("QYuan","cwTeXQYuan-Medium.ttf") # 新增字體
 showtext_auto(enable=TRUE) #啟用字體
 theme_set(theme_classic())
 knitr::opts_chunk$set(out.width='80%', fig.asp=.75, fig.align='center', fig.showtext=T)
+```
+
+##這我自己在試著把osmData下載下來
+```{r}
+download.file("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/map1.osm",destfile = "map1.osm")
+```
+```{r}
+st_layers("map1.osm")
+```
+```{r}
+st_read("map1.osm",layer = "lines") -> sf_lala_lines
+```
+
+```{r}
+st_read("map1.osm",layer = "points") -> sf_lala_points
+```
+
+
+```{r}
+st_read("map1.osm",layer = "multipolygons") -> sf_lala_multipolygons
+```
+
+```{r}
+sf_lala_points %>%
+  ggplot()+geom_sf()+
+  geom_sf(
+    data = sf_lala_lines
+  )  #做層疊上去
+```
+
+
+
+```{r}
+sf_lala_lines %>%
+  ggplot()+geom_sf() ->plot_lala_line
+```
+
+
+
+```{r}
+sf_lala_multipolygons %>%
+  ggplot()+geom_sf()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+##課堂
+
+```{r}
+library(osmdata)
+download.file("https://www.dropbox.com/s/wisgdb03j01js1r/map.osm?dl=1",
+              destfile = "map.osm")
+st_layers("map.osm")
+```
+```{r}
+st_read("map.osm",layer="lines") -> sf_ntpu_lines
+```
+
+
+```{r}
+sf_ntpu_lines %>%
+  ggplot()+geom_sf()
+```
+
+```{r}
+st_read("map.osm",layer="points") -> sf_ntpu_points
+```
+
+```{r}
+sf_ntpu_points %>%
+  ggplot()+geom_sf()
+```
+
+
+```{r}
+st_read("map.osm",layer="multipolygons") -> sf_ntpu_multipoygons
+```
+```{r}
+sf_ntpu_multipoygons %>%
+  ggplot()+geom_sf()
+```
+
+
+## osm bbox
+```{r}
+
 ```
 
 
