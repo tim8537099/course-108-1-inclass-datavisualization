@@ -1,0 +1,44 @@
+---
+title: "每週一圖作業繪圖說明檔"
+output: html_document
+params:
+  組員: ["林應廷","王童緯"]  
+  學號: ["710761129","710761115"]
+---
+
+#### 環境設定
+
+以下為老師執行時一定會存在的環境設定
+```{r basic setup, message=FALSE, echo=TRUE, eval=T}
+rm(list=ls())
+library(dplyr); library(stringr); library(ggplot2); library(plotly); library(lubridate); library(readr); library(colorspace); library(grDevices); library(shiny); library(shinyjs); library(scales)
+library(tidyr); library(showtext); library(tidyverse); library(colorspace)
+
+#font_add("QYuan","cwTeXQYuan-Medium.ttf") # 新增字體
+showtext_auto(enable=TRUE) #啟用字體
+theme_set(theme_classic())
+knitr::opts_chunk$set(fig.align='center', fig.showtext=T)
+```
+
+
+#### 繪圖程式
+
+```{r graph, echo=T, eval=T}
+load("graphData.Rda") # 此行為第一行
+colorspace::sequential_hcl(n = 7, h = c(237, 74), c = c(55, NA, 10), l = c(24, 95), power = c(0.7, 2), register = "myPalette")
+graphData %>%
+  ggplot()+
+  geom_tile(
+    aes(x=月份,y=reorder(景點,人數,order=T),fill=人數))+
+  scale_fill_continuous_sequential(palette="myPalette")+
+      labs(x="月份",
+           y="景點",
+           title="花蓮景點參觀人數")
+```
+
+#### 設計說明
+說明想傳達的訊息（必要）及設計想法（非必要）。寫在***下一行。
+
+*** 
+此圖抓取花蓮市附近知名景點，其中以太魯閣為最多人參觀的景點，且以八月為最主要月份，而東大門夜市及七星潭相較於太魯閣就沒有那麼多人，頗為訝異；此圖相對於前次作業圖形更可以看出景點觀光人數及月分差別。
+
