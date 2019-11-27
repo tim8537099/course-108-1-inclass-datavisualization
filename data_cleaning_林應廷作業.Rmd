@@ -1,0 +1,58 @@
+---
+title: "每週一圖作業資料檔"
+output: html_document
+params:
+  組員: ["林應廷"]  
+  學號: ["710761129"]
+---
+
+#### 環境設定
+
+以下為老師執行時一定會存在的環境設定
+```{r basic setup, message=FALSE, echo=TRUE, eval=T}
+rm(list=ls())
+library(dplyr); library(stringr); library(ggplot2); library(plotly); library(lubridate); library(readr); library(colorspace); library(grDevices); library(shiny); library(shinyjs); library(scales);library(sf);library(magick)
+library(tidyr); library(showtext); library(tidyverse); library(colorspace)
+
+#font_add("QYuan","cwTeXQYuan-Medium.ttf") # 新增字體
+showtext_auto(enable=TRUE) #啟用字體
+theme_set(theme_classic())
+knitr::opts_chunk$set(fig.align='center', fig.showtext=T)
+```
+
+#### 資料處理
+  
+```{r data cleaning, echo=TRUE, eval=T}
+graphData <- list()
+raster_photo <- list()
+outer <- 
+  rbind(
+    c(3,6),
+    c(2,4),
+    c(3,2),
+    c(6,2),
+    c(7,4),
+    c(6,6),
+    c(3,6)
+  )
+
+
+line_1 <- rbind(c(3,6),c(6,2),c(3,6))
+line_2 <- rbind(c(2,4),c(7,4),c(2,4))
+line_3 <- rbind(c(3,2),c(6,6),c(3,2))
+
+graphData <- st_polygon(
+  list(outer,line_1,line_2,line_3)
+)
+
+
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/photo.png") -> photo
+
+image_fill(photo,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_photo
+
+save(graphData,raster_photo,file = "graphData.Rda")
+```
+
+
