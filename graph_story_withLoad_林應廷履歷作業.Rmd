@@ -1,0 +1,47 @@
+---
+title: "每週一圖作業繪圖說明檔"
+output: html_document
+params:
+  組員: ["林應廷"]  
+  學號: ["710761129"]
+---
+
+#### 環境設定
+
+以下為老師執行時一定會存在的環境設定
+```{r basic setup, message=FALSE, echo=TRUE, eval=T}
+rm(list=ls())
+library(dplyr); library(stringr); library(ggplot2); library(plotly); library(lubridate); library(readr); library(colorspace); library(grDevices); library(shiny); library(shinyjs); library(scales)
+library(tidyr); library(showtext); library(tidyverse); library(colorspace)
+
+#font_add("QYuan","cwTeXQYuan-Medium.ttf") # 新增字體
+showtext_auto(enable=TRUE) #啟用字體
+theme_set(theme_classic())
+knitr::opts_chunk$set(fig.align='center', fig.showtext=T)
+```
+
+
+#### 繪圖程式
+
+```{r graph, echo=T, eval=T}
+load("graphData.Rda") # 此行為第一行
+graphData %>%
+  ggplot(aes(x=學年度,y=分數,color=指標))+
+  geom_line()+
+  geom_point()+
+  geom_text(aes(label = 分數,vjust = 1.2,hjust=-0.5,angle=30))+
+  theme(legend.position = "none")+
+  annotate("text",x=106,y=240,label = paste("立定跳遠"),size=3)+
+  annotate("text",x=105,y=60,label = paste("仰臥起坐"),size=3)+
+  annotate("text",x=105,y=17,label = paste("坐姿體前彎"),,size=3)+
+  labs(title = "歷年體適能成績",caption="資料來源:教育部健康體育護照")+
+  scale_x_continuous(breaks = seq(95,106,1))+
+  scale_y_continuous(breaks = seq(15,250,15))
+
+```
+
+#### 設計說明
+說明想傳達的訊息（必要）及設計想法（非必要）。寫在***下一行。
+
+*** 
+用從小到大體適能資料來做簡單的自我介紹，想要以線圖來看成長的趨勢，可笑的是仰臥起坐和坐姿體前彎十年如一日沒有什麼太大變化，只有立定跳遠可以拿來說嘴，有年年上升的趨勢。
