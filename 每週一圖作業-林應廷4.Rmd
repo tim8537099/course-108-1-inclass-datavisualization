@@ -1,0 +1,84 @@
+---
+title: "每週一圖作業"
+output: html_document
+params:
+  組員: ["林應廷","王童緯"]  
+  學號: ["710761129","710761115"]
+---
+
+#### 環境設定
+
+以下為老師執行時一定會存在的環境設定
+```{r basic setup, message=FALSE, echo=TRUE, eval=T}
+library(dplyr); library(stringr); library(ggplot2); library(plotly); library(lubridate); library(readr); library(tidyr); library(showtext);library(colorspace);library(shinyjs)
+
+font_add("QYuan","cwTeXQYuan-Medium.ttf") # 新增字體
+showtext_auto(enable=TRUE) #啟用字體
+theme_set(theme_classic())
+knitr::opts_chunk$set(out.width='80%', fig.asp=.75, fig.align='center', fig.showtext=T)
+```
+
+#### 資料處理
+
+此部份在做：
+
+  * 原始Rda資料引入（即引入**dataList**物件）；
+  
+  * 資料清理成作圖用graphData物件。
+
+請將你最原始的資料連同作業一起上傳到作業上傳網址：  
+  * 若「原始資料為網頁下載」，且下載指令寫在data cleaning chunk裡的話，可以不用上傳「資料」。  
+  * 若原始資料有很多個檔案，請先引入成data frame並存在「一個」.Rda檔裡上傳（如`example_data.Rda`檔）。  
+
+資料檔引入到進入作圖前的資料處理請寫在下面區塊，分二部份：
+
+  * 資料處理  
+  * 作圖用資料物件生成
+  
+```{r data cleaning, echo=TRUE, eval=T}
+library(readr)
+hualien <- read_csv("http://opendataap2.hl.gov.tw/./resource/files/2019-03-15/27b5594a385573df182ebb70880cdcbe.csv")
+
+graphData <- list()
+hualien %>%
+  gather("鯉魚潭","七星潭","太魯閣","海洋公園","慶修院","松園別館","東大門夜市",
+         key = 景點, value = 人數) -> graphData
+graphData %>% select(月份,景點,人數) -> graphData
+graphData$人數 %>% as.numeric() -> graphData$人數
+graphData %>% na.omit() -> graphData
+
+#合計資料影響到圖示顯示所以刪掉
+graphData <- graphData[-11,]
+graphData <- graphData[-21,]
+graphData <- graphData[-31,]
+graphData <- graphData[-41,]
+graphData <- graphData[-51,]
+graphData <- graphData[-61,]
+graphData <- graphData[-71,]
+
+graphData %>%
+  mutate(月份=factor(月份,levels=c("1","2","3","4","5","6","7","8","9","10"))) -> graphData
+```
+
+
+
+#### 繪圖程式
+
+```{r graph, echo=T, eval=T}
+colorspace::sequential_hcl(n = 7, h = c(237, 74), c = c(55, NA, 10), l = c(24, 95), power = c(0.7, 2), register = "myPalette")
+graphData %>%
+  ggplot()+
+  geom_tile(
+    aes(x=月份,y=reorder(景點,人數,order=T),fill=人數))+
+  scale_fill_continuous_sequential(palette="myPalette")+
+      labs(x="月份",
+           y="景點",
+           title="花蓮景點參觀人數")
+```
+
+
+
+#### 設計說明
+說明想傳達的訊息（必要）及設計想法（非必要）。寫在***之後
+*** 
+此圖抓取花蓮市附近知名景點，其中以太魯閣為最多人參觀的景點，且以八月為最主要月份，而東大門夜市及七星潭相較於太魯閣就沒有那麼多人，頗為訝異；此圖相對於前次作業圖形更可以看出景點觀光人數差別。
