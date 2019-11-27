@@ -1,5 +1,5 @@
 ---
-title: "每週一圖作業範例"
+title: "每週一圖作業"
 output: html_document
 params:
   組員: ["林應廷","王童緯"]  
@@ -10,7 +10,7 @@ params:
 
 以下為老師執行時一定會存在的環境設定
 ```{r basic setup, message=FALSE, echo=TRUE, eval=T}
-library(dplyr); library(stringr); library(ggplot2); library(plotly); library(lubridate); library(readr);
+library(dplyr); library(stringr); library(ggplot2); library(plotly); library(lubridate); library(readr);library(readxl)
 library(tidyr); library(showtext)
 
 font_add("QYuan","cwTeXQYuan-Medium.ttf") # 新增字體
@@ -37,7 +37,7 @@ knitr::opts_chunk$set(out.width='80%', fig.asp=.75, fig.align='center', fig.show
   * 作圖用資料物件生成
   
 ```{r data cleaning, echo=TRUE, eval=T}
-macro <- read_excel("C:/Users/tim85/Desktop/macro.xlsx")
+load("~/GitHub/course-108-1-inclass-datavisualization/macro.Rda")
 select(macro,
        時間,紐約道瓊工業平均數,`東京日經 225 指數`) -> graphData
 graphData %>%
