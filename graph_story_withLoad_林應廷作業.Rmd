@@ -1,0 +1,71 @@
+---
+title: "每週一圖作業繪圖說明檔"
+output: html_document
+params:
+  組員: ["林應廷"]  
+  學號: ["710761129"]
+---
+
+#### 環境設定
+
+以下為老師執行時一定會存在的環境設定
+```{r basic setup, message=FALSE, echo=TRUE, eval=T}
+rm(list=ls())
+library(dplyr); library(stringr); library(ggplot2); library(plotly); library(lubridate); library(readr); library(colorspace); library(grDevices); library(shiny); library(shinyjs); library(scales);library(sf);library(magick)
+library(tidyr); library(showtext); library(tidyverse); library(colorspace)
+
+#font_add("QYuan","cwTeXQYuan-Medium.ttf") # 新增字體
+showtext_auto(enable=TRUE) #啟用字體
+theme_set(theme_classic())
+knitr::opts_chunk$set(fig.align='center', fig.showtext=T)
+```
+
+
+
+#### 繪圖程式
+
+```{r graph, echo=T, eval=T}
+load("graphData.Rda")
+graphData %>%
+  ggplot()+geom_sf(fill="hotpink2",alpha=0.3)+
+  annotate("text",x=4.5,y=6,label=paste("工作經歷"),size=4,vjust=-0.5,color="red")+
+  annotate("text",x=2.5,y=5,label=paste("研發能力"),size=4,angle=63,vjust=-0.5,color="red")+
+  annotate("text",x=2.5,y=2.8,label=paste("作品集"),size=4,angle=120,vjust=0.5,color="red")+
+  annotate("text",x=4.5,y=2,label=paste("活動"),size=4,vjust=1.2,color="red")+
+  annotate("text",x=6.6,y=2.8,label=paste("競賽"),size=4,angle=250,color="red")+
+  annotate("text",x=6.5,y=5,label=paste("學歷"),size=4,vjust=-1.1,angle=-63,color="red")+
+  annotate("text",x=4.5,y=5.8,label=paste("UGOTIT"),size=3)+
+  annotate("text",x=4.5,y=5.3,label=paste("Trend Micro"),size=3)+
+  annotate("text",x=2.8,y=3.3,label=paste("即刻救援1280"),size=3,angle=120)+
+  annotate("text",x=3.1,y=3.4,label=paste("磺溪時代"),size=3,angle=120)+
+  annotate("text",x=3.4,y=3.5,label=paste("SELFER STATE"),size=3,angle=120)+
+  annotate("text",x=4.5,y=2.2,label=paste("偏鄉VR資訊教學"),size=3)+
+  annotate("text",x=4.5,y=2.4,label=paste("高雄大學畢業二手市集策畫人"),size=3)+
+  annotate("text",x=4.5,y=2.6,label=paste("高雄大學資管營資訊長"),size=3)+
+  annotate("text",x=4.5,y=2.8,label=paste("ECIC電子商務創意競賽"),size=3)+
+  annotate("text",x=6.4,y=3,label=paste("全國大專院校資訊應用服務創新競賽NO.3"),size=2.5,angle=244)+
+  annotate("text",x=6.2,y=3.1,label=paste("高雄大學資管系專題競賽NO.1"),size=2.5,angle=244)+
+  annotate("text",x=6,y=3.2,label=paste("創意行銷App獎特優"),size=2.5,angle=244)+
+  annotate("text",x=5.8,y=3.3,label=paste("網路行銷獎優等"),size=2.5,angle=244)+
+  annotate("text",x=6.4,y=4.8,label=paste("國立中山大學資訊管理研究所"),size=2.5,angle=-63)+
+  annotate("text",x=6.2,y=4.7,label=paste("國立高雄大學資訊管理學系"),size=2.5,angle=-63)+
+  annotate("text",x=2.6,y=4.8,label=paste("Javascript"),size=3,angle=62)+
+  annotate("text",x=2.7,y=4.7,label=paste("C#"),size=3,angle=62)+
+  annotate("text",x=2.8,y=4.6,label=paste("HTML/CSS"),size=3,angle=62)+
+  annotate("text",x=2.9,y=4.5,label=paste("MongoDB"),size=3,angle=62)+
+  annotation_raster(raster_photo,3.6,5.5,3.3,5)+
+  labs(title = "個人履歷卦象",caption="EMAIL:sharon00734@gmail.com")+
+  theme(axis.line = element_blank(),
+        axis.title = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank())
+```
+
+
+
+#### 設計說明
+說明想傳達的訊息（必要）及設計想法（非必要）。寫在***下一行。
+
+*** 
+https://www.cakeresume.com/resumes/sharonchin
+以類似雷達圖的方式來為這位同學的各項能力、經歷劃分同時寫上經歷內容，完成後卻發現此圖異常的像八卦陣，所以將其標題打成履歷卦象。
