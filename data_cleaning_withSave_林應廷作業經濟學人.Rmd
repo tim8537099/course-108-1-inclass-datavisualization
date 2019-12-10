@@ -32,6 +32,75 @@ source("https://www.dropbox.com/s/4tubw8e5h3cem6w/theEconomist.R?dl=1")
   get_theWorldThisWeek() -> df_business
 ```
 
+
+```{r}
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/alibaba.jpg") -> alibaba
+
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/saudi.jpg") -> saudi
+
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/westpac.jpg") -> westpac
+
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/china.png") -> china
+
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/huawei.png") -> huawei
+
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/hp.jpg") -> hp
+
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/xerox.jpg") -> xerox
+
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/amazon.png") -> amazon
+
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/uber.jpg") -> uber
+```
+
+
+
+
+```{r}
+image_fill(alibaba,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_alibaba
+
+image_fill(saudi,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_saudi
+
+image_fill(westpac,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_westpac
+
+image_fill(china,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_china
+
+image_fill(huawei,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_huawei
+
+image_fill(hp,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_hp
+
+image_fill(xerox,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_xerox
+
+image_fill(amazon,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_amazon
+
+image_fill(uber,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_uber
+```
+
+
+
+
+
+
+
+
 ```{r}
 data(world,package="spData")
 world %>% st_geometry() %>%
@@ -99,70 +168,6 @@ world %>%
   theme(legend.position = "none")-> plot_us
 plot_us
 ```
-
-
-```{r}
-image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/alibaba.jpg") -> alibaba
-
-image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/saudi.jpg") -> saudi
-
-image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/westpac.jpg") -> westpac
-
-image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/china.png") -> china
-
-image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/huawei.png") -> huawei
-
-image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/hp.jpg") -> hp
-
-image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/xerox.jpg") -> xerox
-
-image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/amazon.png") -> amazon
-
-image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/uber.jpg") -> uber
-```
-
-
-
-
-```{r}
-image_fill(alibaba,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
-phototransparent  %>%
-  as.raster() -> raster_alibaba
-
-image_fill(saudi,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
-phototransparent  %>%
-  as.raster() -> raster_saudi
-
-image_fill(westpac,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
-phototransparent  %>%
-  as.raster() -> raster_westpac
-
-image_fill(china,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
-phototransparent  %>%
-  as.raster() -> raster_china
-
-image_fill(huawei,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
-phototransparent  %>%
-  as.raster() -> raster_huawei
-
-image_fill(hp,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
-phototransparent  %>%
-  as.raster() -> raster_hp
-
-image_fill(xerox,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
-phototransparent  %>%
-  as.raster() -> raster_xerox
-
-image_fill(amazon,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
-phototransparent  %>%
-  as.raster() -> raster_amazon
-
-image_fill(uber,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
-phototransparent  %>%
-  as.raster() -> raster_uber
-```
-
-
 
 
 
