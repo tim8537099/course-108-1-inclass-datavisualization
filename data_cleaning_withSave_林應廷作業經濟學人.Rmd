@@ -11,7 +11,7 @@ params:
 以下為老師執行時一定會存在的環境設定
 ```{r basic setup, message=FALSE, echo=TRUE, eval=T}
 rm(list=ls())
-library(dplyr); library(stringr); library(ggplot2); library(plotly); library(lubridate); library(readr); library(colorspace); library(grDevices); library(shiny); library(shinyjs); library(scales)
+library(dplyr); library(stringr); library(ggplot2); library(plotly); library(lubridate); library(readr); library(colorspace); library(grDevices); library(shiny); library(shinyjs); library(scales);library(sf);library(magick);library(rvest)
 library(tidyr); library(showtext); library(tidyverse); library(colorspace)
 
 #font_add("QYuan","cwTeXQYuan-Medium.ttf") # 新增字體
@@ -23,7 +23,6 @@ knitr::opts_chunk$set(fig.align='center', fig.showtext=T)
 #### 資料處理
   
 ```{r data cleaning, echo=TRUE, eval=T}
-library(dplyr); library(rvest); library(stringr)
 source("https://www.dropbox.com/s/4tubw8e5h3cem6w/theEconomist.R?dl=1")
 
 "https://www.economist.com/the-world-this-week/2019/11/21/politics-this-week" %>%
@@ -32,4 +31,154 @@ source("https://www.dropbox.com/s/4tubw8e5h3cem6w/theEconomist.R?dl=1")
 "https://www.economist.com/the-world-this-week/2019/11/21/business-this-week" %>%
   get_theWorldThisWeek() -> df_business
 ```
+
+```{r}
+data(world,package="spData")
+world %>% st_geometry() %>%
+  ggplot()+geom_sf()
+```
+
+```{r}
+world %>% 
+  filter(
+    name_long=="China"
+  ) %>% 
+  ggplot()+geom_sf(aes(fill="red"))+
+  geom_sf_text(
+    aes(label=name_long)
+  )+annotation_raster(raster_alibaba,121,135,30.1898036,38)+
+  annotation_raster(raster_china,110,120,30,36)+
+  annotation_raster(raster_huawei,110,116,20,26)+
+  theme(legend.position = "none")->plot_china
+plot_china
+```
+
+```{r}
+
+world %>% 
+  filter(
+    name_long=="Saudi Arabia"
+  ) %>% 
+  ggplot()+geom_sf(fill = "chocolate1")+
+  geom_sf_text(
+    aes(label=name_long)
+  )+annotation_raster(raster_saudi,47,55,24.5,27)+
+  theme(legend.position = "none")-> plot_saudi
+plot_saudi
+```
+
+```{r}
+world %>% 
+  filter(
+    name_long=="Australia"
+  ) %>% 
+  ggplot()+geom_sf()+
+  geom_sf_text(
+    aes(label=name_long)
+  )+annotation_raster(raster_westpac,145,151,-30,-33)
+```
+
+
+
+
+
+```{r}
+world %>% 
+  filter(
+    name_long=="United States"
+  ) %>% 
+  st_crop(xmin=-60,xmax=-130,ymin=25,ymax=50) %>%
+  ggplot()+geom_sf(fill="deepskyblue2")+
+  geom_sf_text(
+    aes(label=name_long)
+  )+
+  annotation_raster(raster_hp,-90,-100,40,45)+
+  annotation_raster(raster_xerox,-110,-120,40,45)+
+  annotation_raster(raster_amazon,-110,-120,30,35)+
+  annotation_raster(raster_uber,-80,-90,30,35)+
+  theme(legend.position = "none")-> plot_us
+plot_us
+```
+
+
+```{r}
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/alibaba.jpg") -> alibaba
+
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/saudi.jpg") -> saudi
+
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/westpac.jpg") -> westpac
+
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/china.png") -> china
+
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/huawei.png") -> huawei
+
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/hp.jpg") -> hp
+
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/xerox.jpg") -> xerox
+
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/amazon.png") -> amazon
+
+image_read("C:/Users/tim85/Documents/GitHub/course-108-1-inclass-datavisualization/uber.jpg") -> uber
+```
+
+
+
+
+```{r}
+image_fill(alibaba,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_alibaba
+
+image_fill(saudi,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_saudi
+
+image_fill(westpac,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_westpac
+
+image_fill(china,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_china
+
+image_fill(huawei,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_huawei
+
+image_fill(hp,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_hp
+
+image_fill(xerox,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_xerox
+
+image_fill(amazon,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_amazon
+
+image_fill(uber,"transparent",point = "+100+100",fuzz = 0) -> phototransparent
+phototransparent  %>%
+  as.raster() -> raster_uber
+```
+
+
+
+
+
+```{r}
+save(plot_china,raster_alibaba,raster_china,raster_huawei,file = "plot_china.Rda")
+```
+
+```{r}
+save(plot_us,raster_amazon,raster_hp,raster_uber,raster_xerox,file="plot_us.Rda")
+```
+
+
+```{r}
+save(plot_saudi,raster_saudi,file="plot_saudi.Rda")
+```
+
+
+
 
