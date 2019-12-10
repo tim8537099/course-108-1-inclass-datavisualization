@@ -1,0 +1,81 @@
+---
+title: "Untitled"
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+```{r basic setup, message=FALSE, echo=TRUE, eval=T}
+library(dplyr); library(stringr); library(ggplot2); library(plotly); library(lubridate); library(readr); library(tidyr); library(showtext);library(sf);library(colorspace)
+
+#font_add("QYuan","cwTeXQYuan-Medium.ttf") # 新增字體
+showtext_auto(enable=TRUE) #啟用字體
+theme_set(theme_classic())
+knitr::opts_chunk$set(out.width='80%', fig.asp=.75, fig.align='center', fig.showtext=T)
+```
+
+
+##plotly
+```{r}
+source("https://www.dropbox.com/s/wlv1ssxqq6n4p7u/gg_hw5_004.R?dl=1", encoding = "utf-8")
+
+gg_hw5_004 %>%
+  ggplotly() ->
+  pltly_hw5_004
+```
+
+```{r}
+api_create(pltly_hw5_004,filename="pltly_hw5_004",fileopt="overwrite") -> Meta_pltly_hw5_004
+```
+
+
+```{r}
+file.create(".Rprofile")
+file.edit(".Rprofile")
+```
+
+
+```{r}
+pltly_hw5_004_v1 <- api_download_plot("1","tim8537099")
+pltly_hw5_004_v1
+```
+
+
+```{r}
+save(pltly_hw5_004_v1,file="pltly_hw5_004_v1.Rda")
+```
+
+
+
+
+##Hover
+```{r}
+p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+   geom_point() + geom_smooth()
+pltly_p0 <- ggplotly(p)
+pltly_p0
+```
+
+
+```{r}
+pltly_p0 %>% plotly_json()
+```
+
+
+
+```{r}
+pltly_p <- 
+  pltly_p0 %>% 
+  style(
+    traces=2:3,
+    hoverinfo = "none" ### 不顯示
+    ) 
+
+pltly_p %>% layout(
+  title="hovertext='none' on traces 2-3"
+)
+```
+
+```{r}
+mtcars
+```
+
