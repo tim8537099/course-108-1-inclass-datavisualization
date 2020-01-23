@@ -1,0 +1,74 @@
+---
+title: "Untitled"
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+```{r basic setup, message=FALSE, echo=TRUE, eval=T}
+library(dplyr); library(stringr); library(ggplot2); library(plotly); library(lubridate); library(readr); library(colorspace); library(grDevices); library(shiny); library(shinyjs); library(scales)
+library(tidyr); library(showtext); library(tidyverse); library(colorspace)
+
+#font_add("QYuan","cwTeXQYuan-Medium.ttf") # 新增字體
+showtext_auto(enable=TRUE) #啟用字體
+theme_set(theme_classic())
+knitr::opts_chunk$set(out.width='80%', fig.asp=.75, fig.align='center', fig.showtext=T)
+```
+
+```{r}
+source("https://www.dropbox.com/s/mdx4777ugnluspz/webApplications.R?dl=1",encoding = "UTF-8")
+```
+
+```{r}
+webapp_project_create(
+  dirlib="./finalHW",
+  overwrite=T
+)
+```
+
+
+```{r}
+htmltools::includeScript(
+  "mtcars.json",
+  type="application/json",
+  id="myJson"
+)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+courseData %>%
+  filter(
+    stringr::str_detect(科目名稱,"軍訓")
+  ) -> 軍訓
+```
+
+
+
+
